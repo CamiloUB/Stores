@@ -11,8 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
   
-     
-         builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConnection"));
+// Inyección de dependencia del servicio SQL Server     
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConnection"));
 
 
 var app = builder.Build();
@@ -23,6 +23,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+/* La sgte instrucción sirve para que nuestra API pueda ser consumida desde
+cualquier sitio */
 
 app.UseHttpsRedirection();
 

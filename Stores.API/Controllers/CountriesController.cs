@@ -32,17 +32,56 @@ namespace Stores.API.Controllers
         }
 
 
-
+        // Busqueda 
         [HttpGet]
           public async Task<ActionResult> Get()
-        {
+          {
             
             return Ok(await _context.Countries.ToListAsync());
 
+           }
 
+
+
+
+        // Busqueda por parametro
+        [HttpGet("{id:int}")] //api/countries/1
+        public async Task<ActionResult> Get(int id)
+        {
+            var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
+            if (country is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(country);
+        }
+
+        // Actualiza
+        [HttpPut]
+        public async Task<ActionResult> Put(Country country)
+        {
+            _context.Update(country);
+            await _context.SaveChangesAsync();
+            return Ok(country);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var afectedRows = await _context.Countries
+                .Where(x => x.Id == id)
+                .ExecuteDeleteAsync();
+
+            if (afectedRows == 0)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
 
 
-        }
-        }
+    }
+}
 
